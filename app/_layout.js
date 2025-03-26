@@ -1,6 +1,7 @@
 import { createContext, useState } from "react";
 import { Stack } from "expo-router";
 import authFunctions from "../utils/authFunctions";
+import { ScreenStack } from "react-native-screens";
 
 export const AuthContext = createContext();
 
@@ -16,7 +17,9 @@ export default function IndexLayout() {
     <AuthContext.Provider
       value={{ isConnected, setIsConnected, authFunctions, user, setUser }}
     >
-      <Stack />
+      <Stack>
+        <Stack.Screen name="auth" options={{ headerShown: false }} />
+      </Stack>
     </AuthContext.Provider>
   );
 }
