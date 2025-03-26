@@ -3,7 +3,6 @@ import {
   View,
   useWindowDimensions,
   StyleSheet,
-  Image,
   SafeAreaView,
   ActivityIndicator,
 } from "react-native";
@@ -13,17 +12,14 @@ import React, { useState, useContext } from "react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Constants from "expo-constants";
 import commonStyles from "../../utils/styles";
-import FormInput from "../../components/connection/FormInput";
-import LogoAndTitle from "../../components/connection/LogoAndTitle";
-import FormButtonAndError from "../../components/connection/FormButtonAndError";
-import axios from "axios";
 import { AuthContext } from "../_layout";
-import { useRouter } from "expo-router";
+import {
+  FormInput,
+  LogoAndTitle,
+  FormButtonAndError,
+} from "../../components/indexComponent";
 
 const Signup = () => {
-  // router
-
-  const router = useRouter();
   //Context
   const { isConnected, setIsConnected, authFunctions, setUser } =
     useContext(AuthContext);
@@ -45,12 +41,9 @@ const Signup = () => {
       password,
       description,
       confirmPassword,
-      isLoading,
       setIsLoading,
       setError,
-      setIsConnected,
-      setUser,
-      router
+      setUser
     );
   };
 
@@ -64,16 +57,19 @@ const Signup = () => {
               state={email}
               setState={setEmail}
               type={"email"}
+              crypted={false}
             ></FormInput>
             <FormInput
               state={username}
               setState={setUsername}
               type={"username"}
+              crypted={false}
             ></FormInput>
             <FormInput
               state={description}
               setState={setDescription}
               type={"description"}
+              crypted={false}
             ></FormInput>
             <FormInput
               state={password}

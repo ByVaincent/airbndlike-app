@@ -1,15 +1,7 @@
 import axios from "axios";
 import { useRouter } from "expo-router";
 
-const login = async (
-  email,
-  password,
-  isLoading,
-  setIsLoading,
-  setError,
-  setIsconnected,
-  setUser
-) => {
+const login = async (email, password, setIsLoading, setError, setUser) => {
   try {
     setIsLoading(true);
     setError(null);
@@ -28,7 +20,6 @@ const login = async (
 
     console.log(user.data);
     setUser({ userToken: user.data.token, userId: user.data.id });
-    setIsconnected(true);
     setIsLoading(false);
   } catch (error) {
     if (error.response?.data?.error) {
@@ -47,12 +38,9 @@ const signup = async (
   password,
   description,
   confirmPassword,
-  isLoading,
   setIsLoading,
   setError,
-  setIsConnected,
-  setUser,
-  router
+  setUser
 ) => {
   try {
     setIsLoading(true);
@@ -82,9 +70,8 @@ const signup = async (
     );
 
     setUser({ userToken: user.data.token, userId: user.data.id });
-    setIsConnected(true);
+
     setIsLoading(false);
-    router.back();
   } catch (error) {
     if (error.response?.data?.error) {
       setError(error.response.data.error);
@@ -96,4 +83,8 @@ const signup = async (
   }
 };
 
-export default { login, signup };
+const logout = (setUser) => {
+  setUser(null);
+};
+
+export default { login, signup, logout };

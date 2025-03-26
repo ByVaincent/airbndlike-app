@@ -7,22 +7,22 @@ import {
   SafeAreaView,
   ActivityIndicator,
 } from "react-native";
-import { Link, Redirect } from "expo-router";
+import { Link } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useContext } from "react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Constants from "expo-constants";
 import commonStyles from "../../utils/styles";
-import FormInput from "../../components/connection/FormInput";
-import LogoAndTitle from "../../components/connection/LogoAndTitle";
-import FormButtonAndError from "../../components/connection/FormButtonAndError";
 import { AuthContext } from "../_layout";
-import axios from "axios";
+import {
+  FormInput,
+  LogoAndTitle,
+  FormButtonAndError,
+} from "../../components/indexComponent";
 
 const Login = () => {
   //context
-  const { isConnected, setIsConnected, authFunctions, setUser } =
-    useContext(AuthContext);
+  const { authFunctions, setUser } = useContext(AuthContext);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -32,20 +32,10 @@ const Login = () => {
   const styles = useStyle();
 
   const formSubmit = async () => {
-    authFunctions.login(
-      email,
-      password,
-      isLoading,
-      setIsLoading,
-      setError,
-      setIsConnected,
-      setUser
-    );
+    authFunctions.login(email, password, setIsLoading, setError, setUser);
   };
 
-  return isConnected ? (
-    <Redirect href="/main/home" />
-  ) : (
+  return (
     <SafeAreaView style={[styles.container]}>
       <KeyboardAwareScrollView contentContainerStyle={{ flex: 1 }}>
         <View style={styles.connectionContainer}>
