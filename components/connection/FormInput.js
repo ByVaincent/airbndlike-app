@@ -16,7 +16,7 @@ const FormInput = ({ state, setState, type, crypted }) => {
         value={state}
         onChangeText={setState}
         secureTextEntry={!crypted ? false : passVisibility ? false : true}
-        multiline={type === "description"}
+        multiline={type === "description" ? true : false}
         textContentType={crypted ? "password" : "none"}
       ></TextInput>
       {crypted && (
