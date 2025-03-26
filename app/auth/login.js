@@ -7,18 +7,23 @@ import {
   SafeAreaView,
   ActivityIndicator,
 } from "react-native";
-import { Link } from "expo-router";
+import { Link, Redirect } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Constants from "expo-constants";
 import commonStyles from "../../utils/styles";
 import FormInput from "../../components/connection/FormInput";
 import LogoAndTitle from "../../components/connection/LogoAndTitle";
 import FormButtonAndError from "../../components/connection/FormButtonAndError";
+import { AuthContext } from "../_layout";
 import axios from "axios";
 
 const Login = () => {
+  //context
+  const { isConnected, setIsConnected, authFunctions, setUser } =
+    useContext(AuthContext);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -27,34 +32,20 @@ const Login = () => {
   const styles = useStyle();
 
   const formSubmit = async () => {
-    try {
-      setIsLoading(true);
-
-      if (!email || !password) {
-        throw { message: "Merci d'indiquer votre email et votre mot de passe" };
-      }
-
-      const user = await axios.post(
-        "https://lereacteur-bootcamp-api.herokuapp.com/api/airbnb/user/log_in",
-        {
-          email,
-          password,
-        }
-      );
-
-      setIsLoading(false);
-    } catch (error) {
-      if (error.response?.data?.error) {
-        setError(error.response.data.error);
-        setIsLoading(false);
-      } else {
-        setError(error.message);
-        setIsLoading(false);
-      }
-    }
+    authFunctions.login(
+      email,
+      password,
+      isLoading,
+      setIsLoading,
+      setError,
+      setIsConnected,
+      setUser
+    );
   };
 
-  return (
+  return isConnected ? (
+    <Redirect href="/main/home" />
+  ) : (
     <SafeAreaView style={[styles.container]}>
       <KeyboardAwareScrollView contentContainerStyle={{ flex: 1 }}>
         <View style={styles.connectionContainer}>
@@ -87,7 +78,7 @@ const Login = () => {
             )}
 
             <Link
-              href={"/user/signup"}
+              href={"/auth/signup"}
               style={{ textDecorationLine: "underline" }}
             >
               Pas encore de compte?

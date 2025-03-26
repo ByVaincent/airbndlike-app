@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { Link } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Constants from "expo-constants";
 import commonStyles from "../../utils/styles";
@@ -17,8 +17,17 @@ import FormInput from "../../components/connection/FormInput";
 import LogoAndTitle from "../../components/connection/LogoAndTitle";
 import FormButtonAndError from "../../components/connection/FormButtonAndError";
 import axios from "axios";
+import { AuthContext } from "../_layout";
+import { useRouter } from "expo-router";
 
-const Login = () => {
+const Signup = () => {
+  // router
+
+  const router = useRouter();
+  //Context
+  const { isConnected, setIsConnected, authFunctions, setUser } =
+    useContext(AuthContext);
+
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [description, setDescription] = useState("");
@@ -29,43 +38,20 @@ const Login = () => {
 
   const styles = useStyle();
 
-  const formSubmit = async () => {
-    try {
-      setIsLoading(true);
-
-      setError("");
-      if (
-        !email ||
-        !password ||
-        !description ||
-        !password ||
-        !confirmPassword
-      ) {
-        throw { message: "Merci de remplir tous les champs demandés" };
-      } else if (password !== confirmPassword) {
-        throw { message: "Les mots de passes doivent être identiques" };
-      }
-      console.log("test");
-
-      const user = await axios.post(
-        "https://lereacteur-bootcamp-api.herokuapp.com/api/airbnb/user/sign_up",
-        {
-          email,
-          username,
-          description,
-          password,
-        }
-      );
-      console.log(user.data);
-      setIsLoading(false);
-    } catch (error) {
-      console.log(error.response.data.error);
-
-      error.response?.data?.error
-        ? setError(error.response.data.error)
-        : setError(error.message);
-      setIsLoading(false);
-    }
+  const formSubmit = () => {
+    authFunctions.signup(
+      email,
+      username,
+      password,
+      description,
+      confirmPassword,
+      isLoading,
+      setIsLoading,
+      setError,
+      setIsConnected,
+      setUser,
+      router
+    );
   };
 
   return (
@@ -114,7 +100,10 @@ const Login = () => {
                 onPress={formSubmit}
               ></FormButtonAndError>
             )}
-            <Link href={"./login"} style={{ textDecorationLine: "underline" }}>
+            <Link
+              href={"auth/login"}
+              style={{ textDecorationLine: "underline" }}
+            >
               Déjà un compte?
             </Link>
           </View>
@@ -124,7 +113,7 @@ const Login = () => {
     </SafeAreaView>
   );
 };
-export default Login;
+export default Signup;
 
 const useStyle = () => {
   const { width, height } = useWindowDimensions();

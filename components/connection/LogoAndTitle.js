@@ -1,6 +1,7 @@
 import commonStyles from "../../utils/styles";
 import { View, Text, Image } from "react-native";
 import logo from "../../assets/logo.png";
+import Title from "../Title";
 
 const LogoAndTitle = ({ text }) => {
   return (
@@ -10,7 +11,7 @@ const LogoAndTitle = ({ text }) => {
         style={{ width: 100, height: 100 }}
         resizeMode="contain"
       ></Image>
-      <Text style={[commonStyles.title]}>{text}</Text>
+      <Title text={text}></Title>
     </View>
   );
 };
