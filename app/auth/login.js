@@ -13,7 +13,7 @@ import React, { useState, useContext } from "react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Constants from "expo-constants";
 import commonStyles from "../../utils/styles";
-import { AuthContext } from "../_layout";
+import { AuthContext } from "../../Contexts/AuthContex";
 import {
   FormInput,
   LogoAndTitle,

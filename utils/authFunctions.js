@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useRouter } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const login = async (email, password, setIsLoading, setError, setUser) => {
   try {
@@ -18,7 +19,10 @@ const login = async (email, password, setIsLoading, setError, setUser) => {
       }
     );
 
-    console.log(user.data);
+    const value = { userToken: user.data.token, userId: user.data.id };
+
+    await AsyncStorage.setItem("user", JSON.stringify(value));
+
     setUser({ userToken: user.data.token, userId: user.data.id });
     setIsLoading(false);
   } catch (error) {
@@ -69,9 +73,14 @@ const signup = async (
       }
     );
 
-    setUser({ userToken: user.data.token, userId: user.data.id });
+    // setUser({ userToken: user.data.token, userId: user.data.id });
+
+    const value = { userToken: user.data.token, userId: user.data.id };
+
+    await AsyncStorage.setItem("user", JSON.stringify(value));
 
     setIsLoading(false);
+    setUser({ userToken: user.data.token, userId: user.data.id });
   } catch (error) {
     if (error.response?.data?.error) {
       setError(error.response.data.error);
@@ -83,7 +92,8 @@ const signup = async (
   }
 };
 
-const logout = (setUser) => {
+const logout = async (setUser) => {
+  await AsyncStorage.removeItem("user");
   setUser(null);
 };
 

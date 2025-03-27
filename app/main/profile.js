@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { AuthContext } from "../_layout";
+import { AuthContext } from "../../Contexts/AuthContex";
 import { TouchableHighlight, View, Text } from "react-native";
 import { Button } from "../../components/indexComponent";
 
