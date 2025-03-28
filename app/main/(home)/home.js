@@ -54,18 +54,13 @@ export default function Home() {
   }, []);
 
   return (
-    <SafeAreaView>
-      <View
-        style={
-          Platform.OS === "ios"
-            ? null
-            : { marginTop: Constants.statusBarHeight }
-        }
-      >
-        <View style={[styles.container, { alignItems: "center", gap: 20 }]}>
-          <Logo size={50} />
-
-          <View
+    <View
+      style={
+        Platform.OS === "ios" ? null : { marginTop: Constants.statusBarHeight }
+      }
+    >
+      <View style={[styles.container]}>
+        {/* <View
             style={[
               styles.container,
               {
@@ -76,51 +71,44 @@ export default function Home() {
                 padding: 15,
               },
             ]}
-          >
-            {isLoading ? (
-              <ActivityIndicator size={50} color={colors.main} />
-            ) : (
-              <FlatList
-                style={styles.FlatList}
-                data={offers}
-                keyExtractor={(item) => String(item._id)}
-                renderItem={({ item }) => {
-                  return (
-                    <View>
-                      <Link href={`./room/${item._id}`}>
-                        <OffersImage
-                          uri={item.photos[0].url}
-                          price={item.price}
-                        />
-                      </Link>
-                      <OfferDetails
-                        title={item.title}
-                        ratingValue={item.ratingValue}
-                        reviews={item.reviews}
-                        uri={item.user.account.photo.url}
-                        size={"20%"}
-                      />
-                    </View>
-                  );
-                }}
-                ListEmptyComponent={() => (
-                  <Text>Impossible de récupérer les offres</Text>
-                )}
-                ItemSeparatorComponent={() => (
-                  <View style={styles.separator}></View>
-                )}
-              ></FlatList>
+          > */}
+        {isLoading ? (
+          <ActivityIndicator size={50} color={colors.main} />
+        ) : (
+          <FlatList
+            style={styles.FlatList}
+            data={offers}
+            keyExtractor={(item) => String(item._id)}
+            renderItem={({ item }) => {
+              return (
+                <View>
+                  <Link href={`./room/${item._id}`}>
+                    <OffersImage uri={item.photos[0].url} price={item.price} />
+                  </Link>
+                  <OfferDetails
+                    title={item.title}
+                    ratingValue={item.ratingValue}
+                    reviews={item.reviews}
+                    uri={item.user.account.photo.url}
+                    size={"20%"}
+                  />
+                </View>
+              );
+            }}
+            ListEmptyComponent={() => (
+              <Text>Impossible de récupérer les offres</Text>
             )}
-          </View>
-        </View>
+            ItemSeparatorComponent={() => (
+              <View style={styles.separator}></View>
+            )}
+          ></FlatList>
+        )}
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {},
-  FlatList: { width: "100%", marginBottom: 250 },
   separator: {
     width: "100%",
     height: 1,

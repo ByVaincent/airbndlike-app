@@ -1,21 +1,13 @@
 import { useRouter } from "expo-router";
 import Constants from "expo-constants";
-import {
-  TouchableHighlight,
-  Text,
-  View,
-  Platform,
-  StyleSheet,
-} from "react-native";
+import { Text, View, Platform, StyleSheet } from "react-native";
 import { useEffect, useState } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
 import {
   Logo,
   OfferDescription,
   OffersImage,
   OfferDetails,
 } from "../../../../components/indexComponent";
-import commonStyles from "../../../../utils/styles";
 import colors from "../../../../utils/colors";
 import { ActivityIndicator } from "react-native";
 import { useLocalSearchParams } from "expo-router";
@@ -27,6 +19,10 @@ export default function Room() {
   const [error, setError] = useState(null);
 
   const { id } = useLocalSearchParams();
+
+  //navigation
+
+  const router = useRouter();
 
   useEffect(() => {
     try {
@@ -47,55 +43,45 @@ export default function Room() {
   }, []);
 
   return (
-    <SafeAreaView>
+    <View
+      style={
+        Platform.OS === "ios" ? null : { marginTop: Constants.statusBarHeight }
+      }
+    >
       <View
-        style={
-          Platform.OS === "ios"
-            ? null
-            : { marginTop: Constants.statusBarHeight }
-        }
+        style={[
+          styles.container,
+          {
+            alignItems: "center",
+            justifyContent: "center",
+          },
+        ]}
       >
-        <View style={[styles.container, { alignItems: "center", gap: 20 }]}>
-          <Logo size={50} />
-
-          <View
-            style={[
-              styles.container,
-              {
-                alignItems: "center",
-
-                paddingVertical: 15,
-              },
-            ]}
-          >
-            {isLoading ? (
-              <ActivityIndicator size={"large"} color={colors.main} />
-            ) : error ? (
-              <Text>{error}</Text>
-            ) : (
-              <View style={styles.container}>
-                <OffersImage uri={offer.photos[1].url} price={offer.price} />
-                <View style={styles.detailsWrapper}>
-                  <OfferDetails
-                    title={offer.title}
-                    ratingValue={offer.ratingValue}
-                    reviews={offer.reviews}
-                    uri={offer.user.account.photo.url}
-                    size={"20%"}
-                  />
-                  <OfferDescription description={offer.description} />
-                </View>
-              </View>
-            )}
+        {isLoading ? (
+          <ActivityIndicator size={"large"} color={colors.main} />
+        ) : error ? (
+          <Text>{error}</Text>
+        ) : (
+          <View style={styles.container}>
+            <OffersImage uri={offer.photos[1].url} price={offer.price} />
+            <View style={styles.detailsWrapper}>
+              <OfferDetails
+                title={offer.title}
+                ratingValue={offer.ratingValue}
+                reviews={offer.reviews}
+                uri={offer.user.account.photo.url}
+                size={"20%"}
+              />
+              <OfferDescription description={offer.description} />
+            </View>
           </View>
-        </View>
+        )}
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: { width: "100%" },
-
   detailsWrapper: { paddingHorizontal: 15 },
 });

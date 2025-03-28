@@ -11,12 +11,17 @@ const OfferDetails = ({ title, ratingValue, reviews, uri, size }) => {
     const emptyStars = 5 - ratingValue;
 
     for (let i = 0; i < ratingValue; i++) {
-      result.push(<Entypo name="star" size={24} color={colors.main} />);
+      result.push(<Entypo key={i} name="star" size={24} color={colors.main} />);
     }
 
     for (let i = 0; i < emptyStars; i++) {
       result.push(
-        <Entypo name="star-outlined" size={24} color={colors.main} />
+        <Entypo
+          key={"emptyStars-" + i}
+          name="star-outlined"
+          size={24}
+          color={colors.main}
+        />
       );
     }
 
@@ -50,5 +55,4 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
   },
   rating: { color: colors.text },
-  ratingContainer: { gap: 20 },
 });

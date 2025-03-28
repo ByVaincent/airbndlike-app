@@ -11,16 +11,18 @@ export default function Profile() {
   const { authFunctions, setUser } = useContext(AuthContext);
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1 }}>
       <View
         style={
           Platform.OS === "ios"
-            ? null
-            : { marginTop: Constants.statusBarHeight }
+            ? { flex: 1 }
+            : { marginTop: Constants.statusBarHeight, flex: 1 }
         }
       >
-        <View style={(styles.container, commonStyles.center)}>
+        <View style={styles.logo}>
           <Logo size={50} />
+        </View>
+        <View style={[styles.container, commonStyles.center]}>
           <Button
             buttonText={"Se déconnecter"}
             onPress={() => authFunctions.logout(setUser)}
@@ -33,4 +35,5 @@ export default function Profile() {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
+  logo: { alignItems: "center" },
 });
